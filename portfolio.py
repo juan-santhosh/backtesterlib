@@ -1,7 +1,7 @@
 import pandas as pd
 
 class Portfolio:
-    def __init__(self, initial_cash: float = 100_000):
+    def __init__(self, initial_cash: float = 100_000) -> None:
         self.cash = initial_cash
         self.position = 0
 

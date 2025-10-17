@@ -1,7 +1,7 @@
 import numpy as np
 from portfolio import Portfolio
 
-def compute_metrics(portfolio: Portfolio):  
+def compute_metrics(portfolio: Portfolio) -> dict[str, float]:  
     values = portfolio.value_history["Value"]
 
     if len(values) < 2:
