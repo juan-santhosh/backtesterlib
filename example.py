@@ -1,21 +1,18 @@
+import pandas as pd
 from backtester import Backtester
 
-def sma_test_signal(bar, context):
-    prices = context.setdefault("prices", [])
-    prices.append(bar["Close"])
+def sma_test_signal(data: pd.DataFrame, context: dict):
+    short_window = 5
+    long_window = 20
 
-    if len(prices) < 20:
-        return "HOLD"
+    data["SMA Short"] = data["Close"].rolling(short_window).mean()
+    data["SMA Long"] = data["Close"].rolling(long_window).mean()
     
-    short_ma = sum(prices[-5:]) / 5
-    long_ma = sum(prices[-20:]) / 20
+    signal = pd.Series("HOLD", index=data.index)
+    signal[data["SMA Short"] > data["SMA Long"]] = "BUY"
+    signal[data["SMA Short"] < data["SMA Long"]] = "SELL"
 
-    if short_ma > long_ma:
-        return "BUY"
-    elif short_ma < long_ma:
-        return "SELL"
-    
-    return "HOLD"
+    return signal
 
 backtester = Backtester(sma_test_signal, "../data/MSFT_1h_2y.csv")
 portfolio, metrics = backtester.run()

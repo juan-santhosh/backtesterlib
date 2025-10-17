@@ -6,11 +6,5 @@ class DataHandler:
         self.data.sort_values("Datetime", inplace=True)
         self.index = 0
 
-    def has_next(self) -> bool:
-        return self.index < len(self.data)
-
-    def next_bar(self) -> pd.Series:
-        bar = self.data.iloc[self.index]
-        self.index += 1
-        
-        return bar
+    def df(self) -> pd.DataFrame:
+        return self.data.copy()
