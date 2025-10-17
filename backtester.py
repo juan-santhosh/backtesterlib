@@ -1,28 +1,44 @@
-from typing import Callable
+import pandas as pd
+from typing import Callable, Any
+
 from data_handler import DataHandler
 from portfolio import Portfolio
 from metrics import compute_metrics
 
 class Backtester:
+    """
+    Runs a backtest using by iterating over supplied historical data.
+    """
+
     def __init__(
         self, 
-        signal_function: Callable, 
+        signal_function: Callable[[pd.Series, dict[str, Any]], str], 
         file_path: str, 
         initial_cash: float = 100_000
     ) -> None:
+        if not callable(signal_function):
+            raise TypeError("signal_function must be callable.")
+
         self.signal_function = signal_function
         self.data = DataHandler(file_path)
         self.portfolio = Portfolio(initial_cash)
-        self.context = {}
-
-    def results(self) -> tuple[Portfolio, dict[str, float]]:
-        metrics = compute_metrics(self.portfolio)
-        return self.portfolio, metrics
+        self.context: dict[str, Any] = {}
 
     def run(self) -> tuple[Portfolio, dict[str, float]]:
+        """
+        Executes backtest and returns performance metrics.
+        """
+
         while self.data.has_next():
             bar = self.data.next_bar()
-            action = self.signal_function(bar, self.context)
+
+            try:
+                action = self.signal_function(bar, self.context)
+
+            except Exception as e:
+                raise RuntimeError(f"Error in signal_function at index {self.data.index}: {e}")
+
             self.portfolio.update(bar, action)
 
-        return self.results()
+        metrics = compute_metrics(self.portfolio)
+        return self.portfolio, metrics

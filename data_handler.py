@@ -20,7 +20,7 @@ class DataHandler:
 
     def _validate_columns(self) -> None:
         required = {"Datetime"}
-        missing = required - set(self.data.columns)
+        missing = required.difference(self.data.columns)
 
         if missing:
             raise ValueError(f"Missing required columns: {', '.join(missing)}")

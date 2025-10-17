@@ -1,25 +1,32 @@
 import numpy as np
+import pandas as pd
 from portfolio import Portfolio
 
-def compute_metrics(portfolio: Portfolio) -> dict[str, float]:  
+def compute_metrics(portfolio: Portfolio) -> dict[str, float]:
+    """
+    Compute standard backtest performance metrics.
+    """
+
     values = portfolio.value_history["Value"]
 
-    if len(values) < 2:
+    if values.empty or len(values) < 2:
         return {
             "Final Value": portfolio.cash, 
-            "Total Return (%)": 0, 
-            "Sharpe Ratio": 0, 
-            "Number of Trades": 0
+            "Total Return (%)": 0.0, 
+            "Sharpe Ratio": 0.0, 
+            "Number of Trades": 0.0
         }
     
-    returns = values.pct_change().fillna(0)
+    returns = values.pct_change().fillna(0.0)
     
     final_value = values.iloc[-1]
-    total_return = ((final_value / values.iloc[0]) - 1) * 100
+    total_return = ((final_value / values.iloc[0]) - 1.0) * 100.0
 
-    sharpe = 0
-    if (returns.std() != 0):
-        sharpe = (returns.mean() / returns.std()) * np.sqrt(252)
+    sharpe = 0.0
+
+    std_returns = returns.std()
+    if (std_returns != 0):
+        sharpe = (returns.mean() / std_returns) * np.sqrt(252)
 
     return {
         "Final Value": round(final_value, 2),
