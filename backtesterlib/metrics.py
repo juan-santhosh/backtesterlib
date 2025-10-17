@@ -1,6 +1,7 @@
 import numpy as np
 import pandas as pd
-from portfolio import Portfolio
+
+from .portfolio import Portfolio
 
 def compute_metrics(portfolio: Portfolio) -> dict[str, float]:
     """
@@ -29,8 +30,8 @@ def compute_metrics(portfolio: Portfolio) -> dict[str, float]:
         sharpe = (returns.mean() / std_returns) * np.sqrt(252)
 
     return {
-        "Final Value": round(final_value, 2),
-        "Total Return %": round(total_return, 2),
-        "Sharpe Ratio": round(sharpe, 2),
-        "Number of Trades": len(portfolio.trade_history)
+        "Final Value": float(round(final_value, 2)),
+        "Total Return %": float(round(total_return, 2)),
+        "Sharpe Ratio": float(round(sharpe, 2)),
+        "Number of Trades": int(len(portfolio.trade_history))
     }

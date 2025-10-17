@@ -1,10 +1,3 @@
-# BacktesterLib
-
-A modular, extensible Python backtesting engine that takes user-written signals and tests it over supplied historical time-series data.
-
-## Example Usage
-
-```python
 from backtesterlib import Backtester, plot_portfolio_history
 
 def sma_test_signal(bar, context):

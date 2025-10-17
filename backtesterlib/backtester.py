@@ -1,9 +1,9 @@
 import pandas as pd
 from typing import Callable, Any
 
-from data_handler import DataHandler
-from portfolio import Portfolio
-from metrics import compute_metrics
+from .data_handler import DataHandler
+from .portfolio import Portfolio
+from .metrics import compute_metrics
 
 class Backtester:
     """
