@@ -1,5 +1,4 @@
 import pandas as pd
-from enum import Enum
 
 class Portfolio:
     def __init__(self, initial_cash: float = 100_000):
@@ -19,7 +18,7 @@ class Portfolio:
     def update(self, bar, action: str) -> None:
         timestamp = bar["Datetime"]
         price = bar["Close"]
-        
+
         if action in ("BUY", "SELL"):
             if action == "BUY" and self.cash >= price:
                 self.position += 1
