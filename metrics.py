@@ -20,7 +20,7 @@ def compute_metrics(portfolio: Portfolio) -> dict[str, float]:
     returns = values.pct_change().fillna(0.0)
     
     final_value = values.iloc[-1]
-    total_return = ((final_value / values.iloc[0]) - 1.0) * 100.0
+    total_return = ((final_value / portfolio.initial_cash) - 1.0) * 100.0
 
     sharpe = 0.0
 

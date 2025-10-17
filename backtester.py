@@ -16,8 +16,14 @@ class Backtester:
         file_path: str, 
         initial_cash: float = 100_000
     ) -> None:
+        if initial_cash <= 0:
+            raise ValueError("Initial cash must be positive.")
+        
         if not callable(signal_function):
             raise TypeError("signal_function must be callable.")
+        
+        if not isinstance(file_path, str):
+            raise TypeError("file_path must be a string.")
 
         self.signal_function = signal_function
         self.data = DataHandler(file_path)
@@ -32,11 +38,16 @@ class Backtester:
         while self.data.has_next():
             bar = self.data.next_bar()
 
-            try:
-                action = self.signal_function(bar, self.context)
+            if not isinstance(bar, pd.Series):
+                raise TypeError("DataHandler.next_bar() must return a dict.")
+            
+            if "Close" not in bar or "Datetime" not in bar:
+                raise KeyError("Each bar must contain 'Close' and 'Datetime' keys.")
 
-            except Exception as e:
-                raise RuntimeError(f"Error in signal_function at index {self.data.index}: {e}")
+            action = self.signal_function(bar, self.context)
+
+            if action not in ("BUY", "SELL", "HOLD"):
+                raise ValueError(f'Invalid signal: {action}. Must be "BUY", "SELL", or "HOLD"')
 
             self.portfolio.update(bar, action)
 

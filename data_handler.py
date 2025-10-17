@@ -7,7 +7,7 @@ class DataHandler:
     Expecting "Datetime" column as the index.
     """
     
-    def __init__(self, file_path: str | Path) -> None:
+    def __init__(self, file_path: str) -> None:
         if not Path(file_path).exists():
             raise FileNotFoundError(f"Data file not found: {file_path}")
         
@@ -19,7 +19,7 @@ class DataHandler:
         self.length: int = len(self.data)
 
     def _validate_columns(self) -> None:
-        required = {"Datetime"}
+        required = {"Datetime", "Close"}
         missing = required.difference(self.data.columns)
 
         if missing:

@@ -18,8 +18,12 @@ def sma_test_signal(bar, context):
     return "HOLD"
 
 backtester = Backtester(sma_test_signal, "../data/MSFT_1h_2y.csv")
+
+print("\nRunning backtest...")
 portfolio, metrics = backtester.run()
 
 print("\nPerformance Summary:")
 for metric, value in metrics.items():
     print(f"{metric:20s}: {value}")
+
+print("")

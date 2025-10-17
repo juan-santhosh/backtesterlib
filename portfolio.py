@@ -6,9 +6,7 @@ class Portfolio:
     """
 
     def __init__(self, initial_cash: float = 100_000) -> None:
-        if initial_cash <= 0:
-            raise ValueError("Initial cash must be greater than 0.")
-        
+        self.initial_cash: float = initial_cash
         self.cash: float = initial_cash
         self.position: int = 0
 
@@ -28,15 +26,8 @@ class Portfolio:
         Only "BUY" and "SELL" modify positions.
         """
 
-        try:
-            timestamp = pd.Timestamp(bar["Datetime"])
-            price = float(bar["Close"])
-
-        except KeyError as error:
-            raise KeyError(f"Bar missing expected column: {error}")
-        
-        except (TypeError, ValueError):
-            raise ValueError("Invalid bar data provided.")
+        timestamp = pd.Timestamp(bar["Datetime"])
+        price = float(bar["Close"])
 
         if action in ("BUY", "SELL"):
             if action == "BUY" and self.cash >= price:
@@ -48,8 +39,5 @@ class Portfolio:
                 self.cash += price
 
             self._record_trade(timestamp, action, price)
-            
-        elif action != "HOLD":
-            raise ValueError(f"Invalid action '{action}'. Must be BUY, SELL, or HOLD.")
 
         self._record_value(timestamp, price)
