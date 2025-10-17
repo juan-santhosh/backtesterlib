@@ -1,4 +1,4 @@
-from backtester import Backtester
+from backtesterlib import Backtester
 
 def sma_test_signal(bar, context):
     prices = context.setdefault("prices", [])
