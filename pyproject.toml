@@ -1,0 +1,26 @@
+[build-system]
+requires = ["hatchling >= 1.26"]
+build-backend = "hatchling.build"
+
+[project]
+name = "backtesterlib"
+dynamic = ["version"]
+authors = [
+    { name="Juan Santhosh", email="juansanthosh@gmail.com" },
+]
+description = "A modular, extensible Python backtesting engine"
+readme = "README.md"
+requires-python = ">=3.14"
+dependencies = [
+    "numpy>=2.3.4",
+    "pandas>=2.3.3"
+]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Operating System :: OS Independent",
+]
+license = "MIT"
+
+[project.urls]
+Homepage = "https://github.com/juan-santhosh/backtesterlib"
+Issues = "https://github.com/juan-santhosh/backtesterlib/issues"

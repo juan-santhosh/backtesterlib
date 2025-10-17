@@ -1,0 +1,1 @@
+A modular, extensible Python backtesting engine that takes user-written signals and tests it over supplied historical time-series data.
